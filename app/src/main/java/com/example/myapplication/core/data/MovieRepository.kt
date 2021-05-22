@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.myapplication.core.data.source.local.LocalDataSource
 import com.example.myapplication.core.data.source.remote.RemoteDataSource
+import com.example.myapplication.core.data.source.remote.network.ApiResponse
 import com.example.myapplication.core.data.source.remote.response.MovieResponse
 import com.example.myapplication.core.domain.model.Movie
 import com.example.myapplication.core.domain.repository.IMovieRepository
@@ -30,7 +31,7 @@ class MovieRepository private constructor(
             }
     }
 
-    override fun getAllTourism(): LiveData<Resource<List<Movie>>> =
+    override fun getAllMovie(): LiveData<Resource<List<Movie>>> =
         object : NetworkBoundResource<List<Movie>, List<MovieResponse>>(appExecutors) {
             override fun loadFromDB(): LiveData<List<Movie>> {
                 return Transformations.map(localDataSource.getAllMovie()) {
@@ -38,39 +39,27 @@ class MovieRepository private constructor(
                 }
             }
 
-            override fun shouldFetch(data: List<Tourism>?): Boolean =
+            override fun shouldFetch(data: List<Movie>?): Boolean =
 //                data == null || data.isEmpty()
                 true // ganti dengan true jika ingin selalu mengambil data dari internet
 
-            override fun createCall(): LiveData<ApiResponse<List<TourismResponse>>> =
-                remoteDataSource.getAllTourism()
+            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> =
+                remoteDataSource.getAllMovie()
 
-            override fun saveCallResult(data: List<TourismResponse>) {
-                val tourismList = DataMapper.mapResponsesToEntities(data)
-                localDataSource.insertTourism(tourismList)
+            override fun saveCallResult(data: List<MovieResponse>) {
+                val movieList = DataMapper.mapResponsesToEntities(data)
+                localDataSource.insertMovie(movieList)
             }
         }.asLiveData()
 
-    override fun getFavoriteTourism(): LiveData<List<Tourism>> {
-        return Transformations.map(localDataSource.getFavoriteTourism()) {
+    override fun getFavoriteMovie(): LiveData<List<Movie>> {
+        return Transformations.map(localDataSource.getFavoriteMovie()) {
             DataMapper.mapEntitiesToDomain(it)
         }
     }
 
-    override fun setFavoriteTourism(tourism: Tourism, state: Boolean) {
-        val tourismEntity = DataMapper.mapDomainToEntity(tourism)
-        appExecutors.diskIO().execute { localDataSource.setFavoriteTourism(tourismEntity, state) }
-    }
-
-    override fun getAllMovie(): LiveData<Resource<List<Movie>>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getFavoriteMovie(): LiveData<List<Movie>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun setFavoriteMovie(Movie: Movie, state: Boolean) {
+    override fun setFavoriteMovie(movie: Movie, state: Boolean) {
         val movieEntity = DataMapper.mapDomainToEntity(movie)
+        appExecutors.diskIO().execute { localDataSource.setFavoriteMovie(movieEntity, state) }
     }
 }
