@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tourism App</string>
+    <string name="app_name">Movie App</string>
     <string name="image_description">Image</string>
     <string name="text_primary">Sample of title text</string>
     <string name="text_subtitle">Sample of subtitle text</string>
@@ -17,4 +17,11 @@
     <string name="poster_of_movie">Poster of a movie</string>
     <string name="title">Title</string>
     <string name="information">Information</string>
+    <string name="empty_state_title_no_conn">No internet connection</string>
+    <string name="empty_state_title_no_favorite_item">No Favorite Movie</string>
+    <string name="empty_state_desc_no_favorite_item_movie">No list of favorite movie</string>
+    <string name="text_overview">Overview</string>
+
+    <string name="baseUrlImage">http://image.tmdb.org/t/p/w500%s</string>
+    <string name="description">Description</string>
 </resources>

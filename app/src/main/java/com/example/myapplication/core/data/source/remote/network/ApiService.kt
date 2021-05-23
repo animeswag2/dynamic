@@ -12,13 +12,8 @@ interface ApiService {
         const val API_KEY = ApiKey.TMDB_API_KEY
     }
 
-    @GET("movie/popular?api_key=$API_KEY")
-    fun getMovies(
-        @Query("page") page: Int
-    ): Call<MovieResponse>
-
-    @GET("movie/{id}?api_key=$API_KEY")
-    fun getMovieDetail(
-        @Path("id") id: Int
-    ): Call<ListMovieResponse>
+    @GET("movie")
+    suspend fun getMovie(
+        @Query("api_key") apiKey: String,
+    ): ListMovieResponse
 }
